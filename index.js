@@ -11,6 +11,10 @@ var fastcsv = require('fast-csv')
 // init app
 const app = express()
 
+process.on('uncaughtException', function (err) {
+    console.error(err);
+    console.log("Node NOT Exiting...");
+  });
 
 app.use('/public', express.static(__dirname + '/public'))
 
