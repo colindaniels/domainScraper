@@ -1,0 +1,28 @@
+{
+  "name": "domainscraper",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "server": "nodemon index.js",
+    "client": "npm run serve --prefix client"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/colindaniels/domainScraper.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/colindaniels/domainScraper/issues"
+  },
+  "homepage": "https://github.com/colindaniels/domainScraper#readme",
+  "dependencies": {
+    "axios": "^0.27.2",
+    "cheerio": "^1.0.0-rc.10",
+    "express": "^4.18.1",
+    "fast-csv": "^4.3.6",
+    "fs": "^0.0.1-security",
+    "puppeteer": "^13.7.0"
+  }
+}
