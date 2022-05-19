@@ -14,7 +14,7 @@ const app = express()
 process.on('uncaughtException', function (err) {
     console.error(err);
     console.log("Node NOT Exiting...");
-  });
+});
 
 app.use('/public', express.static(__dirname + '/public'))
 
@@ -58,7 +58,13 @@ app.get('/flippa', (req, res) => {
     let all_domains = []
     async function getPrices() {
         var browser = await puppeteer.launch({
-            headless: true
+            headless: true,
+            
+            // Required to run on Heroku
+            'args': [
+                '--no-sandbox',
+                '--disable-setuid-sandbox'
+            ]
         })
         var page = await browser.newPage()
         await page.goto(`https://flippa.com/domains?sort_alias=most_recent&search_template=most_relevant&filter%5Bsale_method%5D=auction,classified&filter%5Bstatus%5D=open&filter%5Bproperty_type%5D=domain&filter%5Brevenue_generating%5D=T,F&page%5Bsize%5D=100&page%5Bnumber%5D=${i}`)
@@ -92,9 +98,9 @@ app.get('/flippa', (req, res) => {
 
 
 
-app.get('/get-all', async(req, res) => {
+app.get('/get-all', async (req, res) => {
     let qry = req.query.results
-   let afternic_domains = await axios.get(`${process.env.SERVER_URL}/afternic?results=${qry}`).then((result) => {
+    let afternic_domains = await axios.get(`${process.env.SERVER_URL}/afternic?results=${qry}`).then((result) => {
         return result.data
     })
     let flippa_domains = await axios.get(`${process.env.SERVER_URL}/flippa?results=${qry}`).then((result) => {
@@ -107,15 +113,15 @@ app.get('/get-all', async(req, res) => {
 })
 
 
-app.get('/export-all', async(req, res) => {
+app.get('/export-all', async (req, res) => {
     let qry = req.query.results
     await axios.get(`${process.env.SERVER_URL}/get-all?results=${qry}`).then((results) => {
         var ws = fileSystem.createWriteStream('./public/domains.csv');
         fastcsv
-        .write(results.data, {headers: true})
-        .on('finish', (() => {
-            res.send('<a href="./public/domains.csv" download="domains.csv" id="download"></a><script>document.querySelector("#download").click()</script>')
-        })).pipe(ws);
+            .write(results.data, { headers: true })
+            .on('finish', (() => {
+                res.send('<a href="./public/domains.csv" download="domains.csv" id="download"></a><script>document.querySelector("#download").click()</script>')
+            })).pipe(ws);
     })
 
 })
