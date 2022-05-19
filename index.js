@@ -89,10 +89,10 @@ app.get('/flippa', (req, res) => {
 
 app.get('/get-all', async(req, res) => {
     let qry = req.query.results
-   let afternic_domains = await axios.get(`http://localhost:8000/afternic?results=${qry}`).then((result) => {
+   let afternic_domains = await axios.get(`${process.env.SERVER_URL}/afternic?results=${qry}`).then((result) => {
         return result.data
     })
-    let flippa_domains = await axios.get(`http://localhost:8000/flippa?results=${qry}`).then((result) => {
+    let flippa_domains = await axios.get(`${process.env.SERVER_URL}/flippa?results=${qry}`).then((result) => {
         return result.data
     })
     console.log(afternic_domains.length)
@@ -104,7 +104,7 @@ app.get('/get-all', async(req, res) => {
 
 app.get('/export-all', async(req, res) => {
     let qry = req.query.results
-    await axios.get(`http://localhost:8000/get-all?results=${qry}`).then((results) => {
+    await axios.get(`${process.env.SERVER_URL}/get-all?results=${qry}`).then((results) => {
         var ws = fileSystem.createWriteStream('./public/domains.csv');
         fastcsv
         .write(results.data, {headers: true})
