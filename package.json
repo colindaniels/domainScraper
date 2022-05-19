@@ -4,8 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "server": "nodemon index.js",
-    "client": "npm run serve --prefix client"
+    "server": "node index.js"
   },
   "repository": {
     "type": "git",
