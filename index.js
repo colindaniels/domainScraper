@@ -1,4 +1,4 @@
-const PORT = 8000
+const PORT = process.env.PORT || 8000
 
 const express = require('express')
 const cheerio = require('cheerio')
@@ -13,6 +13,7 @@ const app = express()
 
 
 app.use('/public', express.static(__dirname + '/public'))
+
 
 app.get('/afternic', (req, res) => {
     let number_of_results = req.query.results / 20;
@@ -113,7 +114,6 @@ app.get('/export-all', async(req, res) => {
         })).pipe(ws);
     })
 
-    
 })
 
 
